@@ -1,12 +1,20 @@
 from flask import Flask
 from flask import request
 from flask import Response
+from datetime import datetime
 
 app = Flask(__name__)
 
-@app.route('/exercicio1',methods=['GET'])
-def get_service(data_inicio, data_fim):
-    return Response(response="isto é um get",
-        status = 200,mimetype="application/html")
+@app.route('/date_service',methods=['GET'])
+def date_service_get():
 
-app.run(debug=True)
+    if 'start_date' in request.args and 'end_date' in request.args
+
+    start_date = datetime.strptime(request.args.get('start_date'), "%Y-%m-%d")
+    end_date = datetime.strptime(request.args.get('end_date'), "%Y-%m-%d")
+
+    return {
+        'days':(end_date - start_date).days
+    }
+
+app.run()

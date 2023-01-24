@@ -7,18 +7,42 @@
     <title>Exercicio1</title>
 </head>
 <body>
-    <h1>Formulário</h1>
-    <form onsubmit="getInterval()">
-        <p>
-            <label for="data_inicio"></label>
-            <input type="date" id="data_inicio" name="data_inicio">
-        </p>
-        <p>
-            <label for="data_fim"></label>
-            <input type="date" id="data_fim" name="data_fim">
-        </p>
-        <button>Enviar</button>
-    </form>
-    <script src="script.js"></script>
+    <h1>Dates calculator</h1>
+
+    <label for="start_date">Enter the first date</label>
+    <input type="date" id="start_date" name="start_date">
+
+    <label for="end_date">Enter the end date</label>
+    <input type="date" id="end_date" name="end_date">
+
+    <button onclick="postDates()">Submit</button>
+
+    <h2>Result</h2>
+    <div id="result"></div>
+
+    <script> 
+    function postDates(){
+        let url = 'http://127.0.0.1:5000/date_service'
+
+        const start_date = document.getElementById('start_date')
+        const end_date = document.getElementById('end_date')
+        const data = {"start_date":start_date.value, "end_date":end_date.value}
+
+        fetch(url, {
+        method: "POST",
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(json => {
+            console.log(json)
+            document.getElementById('result').innerHTML = "<p>Days"+json.days+"</p>"+"<p>Weeks"+json.weeks+"</p>"+"<p>Months"+json.months+"</p>"
+        })
+        .catch(error => console.error(error))
+    }
+
+    </script>
 </body>
 </html>

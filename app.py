@@ -40,8 +40,8 @@ def date_service_post():
 
     if 'start_date' in request.json and 'end_date' in request.json:
 
-        start_date = datetime.strptime(request.args.json['start_date'], "%Y-%m-%d")
-        end_date = datetime.strptime(request.args.json['end_date'], "%Y-%m-%d")
+        start_date = datetime.strptime(request.json['start_date'], "%Y-%m-%d")
+        end_date = datetime.strptime(request.json['end_date'], "%Y-%m-%d")
 
         return calculate_dif_dates(start_date, end_date)
 

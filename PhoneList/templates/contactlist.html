@@ -32,7 +32,7 @@
                 console.log(json)
                 document.getElementById('contacts').innerHTML = ""
                 json.contacts.forEach(contact => {
-                    document.getElementById('contacts').innerHTML += `<p>Nome: ${contact['name']}  Phone: ${contact['phone']}  <button onclick='showUpdateFields(${contact['id']})'>Edit </button></p>`
+                    document.getElementById('contacts').innerHTML += `<p>Nome: ${contact['name']}  Phone: ${contact['phone']}  <button onclick='showUpdateFields(${contact['id']})'>Edit </button> <button onclick='deleteContact(${contact['id']})'>Remove </button></p>`
                 });
                 
             })
@@ -86,12 +86,18 @@
             console.log(phone.value)
 
             confirmEditButton.setAttribute("id", "confirmEditButton")
+            confirmEditButton.innerText = "Confirmar"
             //confirmEditButton.setAttribute("onclick", `updateContact(${id},${name.value},${phone.value})`)
             document.body.appendChild(confirmEditButton)
             document.getElementById("confirmEditButton").addEventListener('click', () => {
                 updateContact(id,name.value,phone.value)
             }); 
+
+
+
         }
+
+
         function updateContact(id, name, phone) {
 
             console.log('ai calica usuario ', id)
@@ -110,6 +116,22 @@
             .then(response => response.json())
             .then(json => {
                 console.log("Contado editado: ", json)
+                getContacts()
+            })
+            .catch(error => console.error(error));
+        }
+
+        function deleteContact(id){
+            let urlDelete = url + `/${parseInt(id)}`
+            fetch(urlDelete, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(json => {
+                console.log("Contato deletado: ", json)
                 getContacts()
             })
             .catch(error => console.error(error));

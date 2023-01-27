@@ -31,7 +31,7 @@ function getContacts(){
         document.getElementById('contacts').innerHTML = ""
         if (json.contacts) {
             json.contacts.forEach(contact => {
-                document.getElementById('contacts').innerHTML += `<p>Nome: ${contact['name']}  Phone: ${contact['phone']}  <button onclick='showUpdateFields(${contact['id']})'>Edit </button><button onclick='deleteContact(${contact['id']})'>Delete </button></p>`
+                document.getElementById('contacts').innerHTML += `<p>Nome: ${contact['name']}  Phone: ${contact['phone']}  <button onclick='showUpdateFields(${contact['id']})'>Editar </button><button onclick='deleteContact(${contact['id']})'>Deletar </button></p>`
             });
         } else {
             document.getElementById('contacts').innerHTML = "Não há nenhum contato na lista!"
@@ -74,15 +74,24 @@ function showUpdateFields(id){
         let popEdit = document.createElement('div')
         popEdit.setAttribute('id', 'popEdit')
 
+        let container = document.createElement('div')
+        container.setAttribute('id', 'containerPop')
+
+        let title = document.createElement('p')
+        title.setAttribute('id', 'title')
+        title.innerText = "Atualize seu contato"
+
         let inputName = document.createElement('input')
         inputName.type = "text";
         inputName.setAttribute('name', 'updateName')
         inputName.setAttribute('id', 'updateName')
+        inputName.setAttribute('placeholder', 'Insira o novo nome')
         
         let inputPhone = document.createElement('input')
         inputPhone.type = "text";
         inputPhone.setAttribute('name', 'updatePhone')
         inputPhone.setAttribute('id', 'updatePhone')
+        inputPhone.setAttribute('placeholder', 'Insira o novo número')
 
         let confirmEditButton = document.createElement("button") 
         confirmEditButton.setAttribute("id", "confirmEditButton")
@@ -90,13 +99,14 @@ function showUpdateFields(id){
 
         let formEdit = document.createElement('form')
         formEdit.setAttribute('id', 'formEdit')
-        formEdit.append(inputName, inputPhone, confirmEditButton)
+        formEdit.append(title, inputName, inputPhone, confirmEditButton)
         formEdit.onsubmit = (e) => {
             e.preventDefault();
             updateContact(id,inputName.value,inputPhone.value);
         }
 
-        popEdit.append(formEdit)
+        container.append(formEdit)
+        popEdit.append(container)
         
         document.body.appendChild(popEdit); 
     }

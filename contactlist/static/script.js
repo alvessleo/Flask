@@ -4,15 +4,17 @@ var editMode = false
 window.onload = getContacts()
 
 document.getElementById('formAdd').onsubmit = (e) => {
-    e.preventDefault()
-    postContact()
+e.preventDefault()
+postContact()
 }
 
 // Função para remover o form de edição, caso ele exista, do dom.
 function removeEditFields() { 
     editMode = false // Desative o modo edição
-    let formEdit = document.getElementById('formEdit')
-    formEdit ? document.body.removeChild(formEdit) : null
+    let popEdit = document.getElementById('popEdit')
+    popEdit ? document.body.removeChild(popEdit) : null
+    // let formEdit = document.getElementById('formEdit')
+    // formEdit ? document.body.removeChild(formEdit) : null
 }
 
 // Requisição GET para recuperar todos os contatos
@@ -44,7 +46,7 @@ function getContacts(){
 function postContact(){
     const name = document.getElementById('name');
     const phone = document.getElementById('phone');
-    
+
     const data = {"name":name.value,"phone":phone.value}
 
     fetch(url, {
@@ -69,6 +71,9 @@ function showUpdateFields(id){
     if(!editMode) { // Se ele não estiver em modo de edição
         editMode = true // Ative o modo edição
         
+        let popEdit = document.createElement('div')
+        popEdit.setAttribute('id', 'popEdit')
+
         let inputName = document.createElement('input')
         inputName.type = "text";
         inputName.setAttribute('name', 'updateName')
@@ -90,8 +95,10 @@ function showUpdateFields(id){
             e.preventDefault();
             updateContact(id,inputName.value,inputPhone.value);
         }
+
+        popEdit.append(formEdit)
         
-        document.body.appendChild(formEdit); 
+        document.body.appendChild(popEdit); 
     }
 }
 
@@ -133,4 +140,4 @@ function deleteContact(id){
     .catch(error => console.error(error));
 }
 
-        
+    

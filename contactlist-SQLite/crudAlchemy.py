@@ -7,9 +7,9 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///contacts.sqlite3"
 db = SQLAlchemy(app)
 
 class Contact(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    nome = db.Column(db.String)
-    phone = db.Column(db.String)
+    id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column('name', db.String(70))
+    phone = db.Column('phone', db.String(14))
 
 contacts = [{'id': 1, 'name': 'Teste', 
 'phone': '9999'}]
@@ -17,6 +17,19 @@ contacts = [{'id': 1, 'name': 'Teste',
 @app.route('/contactlist',methods=['GET'])
 def contactlist():
     return render_template('contactlist.html')
+
+@app.route("/users")
+def user_list():
+    contato = Contact(
+            name='Pedro',
+            phone='(42)99999-9999',
+        )
+    db.session.add(contato)
+    db.session.commit()
+    contatos = db.session.execute(db.select(Contact)).scalars()
+    return render_template("teste.html", contatos=contatos)
+    # contacts = db.session.execute(db.select(Contact).order_by(Contact.id)).scalars()
+    # return render_template("teste.html", contacts=contacts)
 
 # GET request to retrieve all contacts
 @app.route('/contacts', methods=['GET'])
@@ -76,6 +89,8 @@ def delete_contact(id):
             return jsonify({'message':'Contact deleted'}), 200
     return {'message': ''}
 
-db.create_all()
-db.init_app(app)
+
+with app.app_context():
+    db.create_all()
+
 app.run(debug=True,port = 5001)

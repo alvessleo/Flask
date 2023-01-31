@@ -1,9 +1,18 @@
 from flask import Flask, jsonify, request, render_template, Response
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///contacts.sqlite3"
 
-contacts = [{'id': 1, 'name': 'John Doe', 
-'phone': '555-555-5555'}]
+db = SQLAlchemy(app)
+
+class Contact(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nome = db.Column(db.String)
+    phone = db.Column(db.String)
+
+contacts = [{'id': 1, 'name': 'Teste', 
+'phone': '9999'}]
 
 @app.route('/contactlist',methods=['GET'])
 def contactlist():
@@ -67,4 +76,6 @@ def delete_contact(id):
             return jsonify({'message':'Contact deleted'}), 200
     return {'message': ''}
 
+db.create_all()
+db.init_app(app)
 app.run(debug=True,port = 5001)

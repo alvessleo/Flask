@@ -11,6 +11,10 @@ class Contact(db.Model):
     name = db.Column('name', db.String(70))
     phone = db.Column('phone', db.String(14))
 
+    def __init__(self, name, phone):
+        self.name = name
+        self.phone = phone
+
 contacts = [{'id': 1, 'name': 'Teste', 
 'phone': '9999'}]
 
